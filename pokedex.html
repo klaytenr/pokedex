@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        var htmlstring="";
+        for(var x=1; x<=151; x++){
+            htmlstring+='<img id='+x+' src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+x+'.png">';
+        }
+        $("#pokemon").append(htmlstring);
+        $(document).on('click', 'img', function(){
+            $("#pokedex").children().hide()
+            var id = $(this).attr("id");
+            $.get("https://pokeapi.co/api/v2/pokemon/"+$(this).attr('id'), function(res){
+                var name= "";
+                name+="<h1>"+res.name+"</h1>";
+                $("#pokedex").append(name);
+                $("#pokedex").append('<img id='+id+' src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png">');
+                var info= "";
+                info += "<h2>Types</h2>";
+                info += "<ul>"; 
+                for(var x = 0; x < res.types.length; x++) {
+                    info += "<li>" + res.types[x].type.name + "</li>";
+                }
+                info += "</ul>";
+                info += "<h2>Height</h2>"
+                info += "<p>" + res.height + "</p>";
+                info += "<h2>Weight</h2>"
+                info += "<p>" + res.weight + "</p>";
+                $("#pokedex").append(info);
+            }, "json");
+        })
+    })
+    </script>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+        #pokedex h1{
+            font-size: 40px;
+            text-align: center;
+        }
+        #wrapper{
+            background-color: red;
+            width: 1900px;
+            height: 1200px;
+            border: solid 3px black;
+        }
+        #pokedex img{
+            height: 330px;
+            margin: 0 0 0 35px;
+            border: 1px black solid;
+        }
+        #pokemon{
+            background-color: white;
+            display: inline-block;
+            width: 1300px;
+        }
+        #pokedex{
+            border: solid blue 4px;
+            background-color: white;
+            width: 400px;
+            height: 800px;
+            display: inline-block;
+            margin: 80px 0 0 100px;
+            vertical-align: top;
+        }
+        #pokedex ul{
+            margin: 25px 0 0 45px;
+        }
+        #pokedex p{
+            margin: 25px 0 0 25px;
+        }
+        #pokedex h2{
+            margin: 10px 0 0 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="pokemon"></div>
+        <div id="pokedex"></div>
+    </div>
+</body>
+</html>
