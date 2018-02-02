@@ -11,14 +11,12 @@
         }
         $("#pokemon").append(htmlstring);
         $(document).on('click', 'img', function(){
-            $("#pokedex").children().hide()
             var id = $(this).attr("id");
-            $.get("https://pokeapi.co/api/v2/pokemon/"+$(this).attr('id'), function(res){
-                var name= "";
-                name+="<h1>"+res.name+"</h1>";
-                $("#pokedex").append(name);
-                $("#pokedex").append('<img id='+id+' src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png">');
+            $.get("https://pokeapi.co/api/v2/pokemon/"+id, function(res){
                 var info= "";
+                info+="<h1>"+res.name+"</h1>";
+                info+= name
+                info+= '<img id='+id+' src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png">';
                 info += "<h2>Types</h2>";
                 info += "<ul>"; 
                 for(var x = 0; x < res.types.length; x++) {
@@ -29,7 +27,7 @@
                 info += "<p>" + res.height + "</p>";
                 info += "<h2>Weight</h2>"
                 info += "<p>" + res.weight + "</p>";
-                $("#pokedex").append(info);
+                $("#pokedex").html(info);
             }, "json");
         })
     })
